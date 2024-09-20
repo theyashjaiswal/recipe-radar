@@ -25,8 +25,6 @@ import { Toaster } from "./components/ui/toaster";
 import axios from "axios";
 import DOMPurify from "dompurify";
 
-import milkIcon from "./assets/dairy-free.png"; // Adjust path to your image
-import vegIcon from "./assets/leaf.png"; // Adjust path to your image file
 import { Navbar } from "./Navbar";
 
 // const recipeDetailsMock = {
