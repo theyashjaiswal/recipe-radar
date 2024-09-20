@@ -22,7 +22,7 @@ import { useToast } from "./hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { Label } from "./components/ui/label";
 import { Checkbox } from "./components/ui/checkbox";
-import chefIcon from "./assets/chef.svg"; // Adjust the path as necessary
+import chefIcon from "./assets/chef.svg";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -139,7 +139,6 @@ const cuisines = [
 ];
 
 export function SearchBox() {
-  const [open, setOpen] = React.useState(false);
   const [recipes, setRecipes] = React.useState<any[]>([]);
   const [originalRecipesResponse, setOriginalRecipesResponse] =
     React.useState(null);
@@ -232,16 +231,17 @@ export function SearchBox() {
       } finally {
         // setLoading(false);
       }
-    }, 300), // Debounce delay in milliseconds
+    }, 300),
     []
   );
 
   const fetchRecipes = async (
     query: string,
     pSize: number,
-    pOffSet: number
+    pOffSet: number,
+    cuisines: string[]
   ) => {
-    const cuisinesString = selectedCuisines.join(",");
+    const cuisinesString = cuisines.join(",");
     console.log("cuisinesString", cuisinesString);
     try {
       const response = await axios.get(
@@ -250,119 +250,58 @@ export function SearchBox() {
           params: {
             apiKey: API_KEY,
             query: query,
-            number: pSize, // Number of results per page
+            number: pSize,
             offset: pOffSet,
             cuisine: cuisinesString,
           },
         }
       );
-      // const response = {
-      //   data: {
-      //     results: [
-      //       {
-      //         id: 644953,
-      //         title: "Goat Cheese Pesto Pizza",
-      //         image: "https://img.spoonacular.com/recipes/644953-312x231.jpg",
-      //         imageType: "jpg",
-      //       },
-      //       {
-      //         id: 642777,
-      //         title: "Fig and Goat Cheese Pizza With Pesto",
-      //         image: "https://img.spoonacular.com/recipes/642777-312x231.jpg",
-      //         imageType: "jpg",
-      //       },
-      //       {
-      //         id: 647124,
-      //         title: "Homemade Thin Crust Pizza + Pesto + Potato",
-      //         image: "https://img.spoonacular.com/recipes/647124-312x231.jpg",
-      //         imageType: "jpg",
-      //       },
-      //       {
-      //         id: 652592,
-      //         title: "Multigrain Tandoori Pizza With Paneer Tikka",
-      //         image: "https://img.spoonacular.com/recipes/652592-312x231.jpg",
-      //         imageType: "jpg",
-      //       },
-      //       {
-      //         id: 642371,
-      //         title:
-      //           "Elk Italian Sausage Pizza With Ricotta Cheese, Sautéd Mushrooms and Onion",
-      //         image: "https://img.spoonacular.com/recipes/642371-312x231.jpg",
-      //         imageType: "jpg",
-      //       },
-      //     ],
-      //     offset: 15,
-      //     number: 5,
-      //     totalResults: 38,
-      //   },
-      // };
       setOriginalRecipesResponse(response.data);
       setRecipes(response.data.results);
-      // setSearchedData(response.data.results);
-
-      // setError(null);
     } catch (err) {
-      // setRecipes(data);
-      // for local testing
       toast({
         variant: "destructive",
         title: "An error occurred while fetching recipes.",
         description: err?.message,
       });
-      // setError("An error occurred while fetching recipes.");
-    } finally {
-      // setLoading(false);
     }
   };
 
   const handleCheckboxChange = (cuisine: string) => {
-    setSelectedCuisines((prevState) =>
-      prevState.includes(cuisine)
+    setSelectedCuisines((prevState) => {
+      const newCuisines = prevState.includes(cuisine)
         ? prevState.filter((item) => item !== cuisine)
-        : [...prevState, cuisine]
-    );
-    fetchRecipes(value, pageSize, offSet);
-    console.log(selectedCuisines, "selectedCusines");
+        : [...prevState, cuisine];
+
+      // Call fetchRecipes with the updated cuisines
+      fetchRecipes(value, pageSize, offSet, newCuisines);
+
+      return newCuisines;
+    });
   };
 
   // Handle input change and debounce the API call
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setValue(newValue);
-    fetchRecipes(newValue, pageSize, offSet);
+    fetchRecipes(newValue, pageSize, offSet, selectedCuisines);
   };
 
   const handlePageSizeChange = (size, pOffSet) => {
     setPageSize(size);
-    setOffSet(0); // Reset offset to 0
+    setOffSet(0);
     pOffSet = 0;
-    fetchRecipes(value, size, pOffSet); // Fetch recipes with the new page size and reset offset
+    fetchRecipes(value, size, pOffSet, selectedCuisines);
   };
 
   const nextLogic = (pSize, pOffSet) => {
-    // Check if there are more recipes to load
-
     setOffSet(pSize + pOffSet);
-    fetchRecipes(value, pSize, pSize + pOffSet);
-    console.log("next", pSize, pOffSet);
+    fetchRecipes(value, pSize, pSize + pOffSet, selectedCuisines);
   };
 
   const prevLogic = (pSize: number, pOffSet: number) => {
-    // Ensure offset does not go below zero
-    // if (pOffSet - pSize < 0) {
-    //   return; // or set offset to 0
-    // }
-
-    // Decrement offset and fetch recipes
     setOffSet(pOffSet - pSize);
-    fetchRecipes(value, pSize, pOffSet - pSize);
-  };
-
-  // Handle key press to open the popover
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      setOpen(!open);
-    }
+    fetchRecipes(value, pSize, pOffSet - pSize, selectedCuisines);
   };
 
   const getCurrentPageNumber = (offset, pageSize) => {
@@ -370,7 +309,6 @@ export function SearchBox() {
   };
 
   React.useEffect(() => {
-    // Clean up debounce function on component unmount
     return () => {
       fetchRecipesDebounce.cancel();
     };
@@ -401,7 +339,6 @@ export function SearchBox() {
             placeholder="Search Recipes..."
             jf-ext-cache-id="0"
             onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
           />
         </div>
         <Popover>
@@ -472,13 +409,12 @@ export function SearchBox() {
         </div>
       ) : (
         <Card className="h-fit p-6 overflow-scroll">
-          <div className="flex flex-wrap gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-4">
             {recipes.map((recipe) => {
               return (
                 <div
                   key={recipe?.id}
-                  className="shadow-2xl mx-auto mt-11 w-80 lg:w-96 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 duration-300 hover:scale-105 hover:shadow-lg"
-                  // style={{ boxShadow: "0px 4px 25px grey" }}
+                  className="shadow-2xl transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 duration-300 hover:scale-105 hover:shadow-lg"
                   onClick={() => {
                     navigate(`/recipeDetailPage/${recipe?.id}`);
                   }}
@@ -489,7 +425,7 @@ export function SearchBox() {
                     alt="Recipe Image"
                   />
                   <div className="p-4">
-                    <h2 className="mb-2 text-lg font-medium dark:text-white text-gray-900">
+                    <h2 className="mb-2 text-lg font-medium dark:text-white text-gray-900 line-clamp-2">
                       {recipe.title}
                     </h2>
                   </div>
