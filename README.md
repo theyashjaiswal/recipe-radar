@@ -1,11 +1,11 @@
 # Recipe-Radar
 
 - **Hosted Link** - [https://https://recipe-radar-three.vercel.app/](https://recipe-radar-three.vercel.app/)
-- Desktop : 
-   - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-02_13_05](https://github.com/user-attachments/assets/1788101e-ee70-4b4e-bb5a-26c8d5129cb9)
-   - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-02_13_25](https://github.com/user-attachments/assets/07b20b4e-b9eb-4fc0-9c17-0461a8be995c)
-   - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-02_15_17](https://github.com/user-attachments/assets/7fb78899-5f06-4544-a11b-e10041a62879)
-   - ![screencapture-recipe-radar-three-vercel-app-recipeDetailPage-658615-2024-09-20-02_23_26](https://github.com/user-attachments/assets/35dd101b-0e87-4134-b18e-26beb0422c19)
+- Desktop :
+   - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-20_04_59](https://github.com/user-attachments/assets/60782ea6-fc86-451b-ab21-a507f02aa5f9)
+   - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-20_05_40](https://github.com/user-attachments/assets/21b7dc8c-7c5f-44bf-aa4e-6ace99bafc23) 
+   - ![screencapture-recipe-radar-three-vercel-app-recipeDetailPage-1096250-2024-09-20-20_07_12](https://github.com/user-attachments/assets/b37ae529-f1f3-400b-936a-d3a10f797e66)
+
 
 ## Instructions to Run
 
