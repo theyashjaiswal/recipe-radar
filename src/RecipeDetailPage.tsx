@@ -430,8 +430,8 @@ function RecipeDetailPage() {
           <Navbar></Navbar>
           <div className="mt-24 bg-white dark:bg-gray-950 max-w-6xl mx-auto pb-12 pt-2 sm:pb-24 sm:pt-2 px-6">
             <div className="flex flex-col justify-center">
-              <p className="text-4xl font-semibold">Recipe Details</p>
-              <Card className="overflow-hidden mt-4" ref={contentRef}>
+              <p className="text-2xl font-semibold">Recipe Details</p>
+              <Card className="overflow-hidden mt-2" ref={contentRef}>
                 <CardHeader className="flex flex-row items-start bg-muted/50">
                   <ChevronLeft
                     className="self-center mr-4 "
