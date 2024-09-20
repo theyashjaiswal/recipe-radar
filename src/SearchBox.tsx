@@ -481,7 +481,7 @@ export function SearchBox() {
               )
             )}
           </motion.p>
-          <img src={chefIcon} alt="Chef Icon" className="w-96 " />{" "}
+          <img src={chefIcon} alt="Chef Icon" className="mt-6 w-96 " />{" "}
         </div>
       ) : (
         <Card className="h-fit p-6 overflow-scroll">
