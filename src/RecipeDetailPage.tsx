@@ -354,7 +354,7 @@ const yesNo = (val) => {
   return val === true ? "Yes" : "No";
 };
 
-const apiKey = import.meta.env.VITE_API_KEY;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 function RecipeDetailPage() {
   const navigate = useNavigate();
