@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Radar } from "lucide-react";
+import { Moon, Radar, Sun } from "lucide-react";
 
-export const Navbar: any = () => {
-  // const { theme, toggleTheme } = props;
+export const Navbar: any = (props: any) => {
+  const { theme, toggleTheme } = props;
 
   return (
     <>
@@ -16,21 +16,15 @@ export const Navbar: any = () => {
             </p>
             <Radar className="h-6 w-6 " />
           </div>
-          <button className="absolute right-5 hover:text-black/80 hover:border hover:rounded-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="lucide lucide-moon text-white"
-            >
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-            </svg>
+          <button
+            onClick={toggleTheme}
+            className="absolute right-5 hover:text-black/80 hover:border hover:rounded-lg"
+          >
+            {theme === "dark" ? (
+              <Sun className="text-white" />
+            ) : (
+              <Moon className="text-white" />
+            )}
           </button>
         </div>
       </header>

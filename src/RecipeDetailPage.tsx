@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
@@ -362,7 +363,8 @@ const yesNo = (val) => {
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-function RecipeDetailPage() {
+function RecipeDetailPage(_props: any) {
+  const { theme, toggleTheme } = _props;
   const navigate = useNavigate();
   const { toast } = useToast();
   const contentRef = useRef();
@@ -427,7 +429,7 @@ function RecipeDetailPage() {
     <>
       {recipeDetails ? (
         <>
-          <Navbar></Navbar>
+          <Navbar theme={theme} toggleTheme={toggleTheme}></Navbar>
           <div className="mt-24 bg-white dark:bg-gray-950 max-w-6xl mx-auto pb-12 pt-2 sm:pb-24 sm:pt-2 px-6">
             <div className="flex flex-col justify-center">
               <p className="text-2xl font-semibold">Recipe Details</p>
@@ -516,7 +518,7 @@ function RecipeDetailPage() {
                     <div className="font-semibold">Health Information</div>
                     <ul className="grid gap-3">
                       <li className="flex items-center justify-between">
-                        <span className="flex text-md gap-2 items-center text-gray-600">
+                        <span className="flex text-md gap-2 items-center text-gray-600 dark:text-muted-foreground ">
                           <Vegan className="h-5 w-5" />
                           Vegan
                           {/* <span className="text-muted-foreground">
@@ -527,7 +529,7 @@ function RecipeDetailPage() {
                         {yesNo(recipeDetails.vegan)}
                       </li>
                       <li className="flex items-center justify-between">
-                        <span className="flex  gap-2 items-center text-gray-600">
+                        <span className="flex  gap-2 items-center text-gray-600  dark:text-muted-foreground ">
                           <MilkOff className="h-5 w-5" />
                           Dairy-Free
                           {/* <span>{yesNo(recipeDetails.dairyFree)}</span> */}
@@ -535,14 +537,14 @@ function RecipeDetailPage() {
                         <span> {yesNo(recipeDetails.vegan)}</span>
                       </li>
                       <li className="flex items-center justify-between">
-                        <span className="flex  gap-2 items-center text-gray-600">
+                        <span className="flex  gap-2 items-center text-gray-600  dark:text-muted-foreground ">
                           <LeafyGreen className="h-5 w-5" />
                           Vegetarian
                         </span>
                         <span> {yesNo(recipeDetails.vegan)}</span>
                       </li>
                       <li className="flex items-center justify-between">
-                        <span className="flex  gap-2 items-center text-gray-600">
+                        <span className="flex  gap-2 items-center text-gray-600  dark:text-muted-foreground ">
                           <WheatOff className="h-5 w-5" />
                           Glutten-Free
                         </span>
@@ -554,7 +556,7 @@ function RecipeDetailPage() {
                     <ul className="grid gap-3">
                       {recipeDetails.extendedIngredients.map((recipeDetail) => (
                         <li className="flex lg:items-center justify-between">
-                          <span className="text-gray-600 capitalize">
+                          <span className="text-gray-600 capitalize  dark:text-muted-foreground">
                             {recipeDetail.name}
                           </span>
                           <span>
