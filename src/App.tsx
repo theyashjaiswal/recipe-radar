@@ -9,18 +9,25 @@ import RecipeDetailPage from "./RecipeDetailPage";
 import { useEffect, useState } from "react";
 
 function App() {
-  // const [showSidebar, onSetShowSidebar] = useState(false);
-  // const { setTheme } = useTheme();
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const systemPreference = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+    return (
+      (localStorage.getItem("vite-ui-theme") as "light" | "dark") ||
+      systemPreference
+    );
+  });
+
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    localStorage.setItem("vite-ui-theme", theme);
   }, [theme]);
 
-  function toggleTheme(_theme: any) {
+  function toggleTheme() {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   }
 
