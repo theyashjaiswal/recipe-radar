@@ -19,9 +19,6 @@ const HomePage = () => {
             Hey Yash, <br></br> What are we cooking today?
           </h2>
           <SearchBox></SearchBox>
-
-          {/* Apply Tailwind or custom styles */}
-          {/* <SearchResults searchedData={searchedData}></SearchResults> */}
         </div>
         <Toaster />
       </div>

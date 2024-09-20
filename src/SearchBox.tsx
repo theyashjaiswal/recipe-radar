@@ -378,7 +378,7 @@ export function SearchBox() {
 
   return (
     <>
-      <div className="flex justify-around py-4 gap-4">
+      <div className="flex justify-between py-4 gap-4">
         <div className="relative justify-center w-5/6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -510,63 +510,69 @@ export function SearchBox() {
           )}
 
           {/* Pagination controls */}
-          <div className="flex items-center justify-between space-x-2 py-4">
-            <div className="text-sm text-muted-foreground">
-              {/* Page {table.getState().pagination.pageIndex + 1} of{" "} */}
-              {/* {table.getPageCount()} */}
-            </div>
-            <div className="space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => prevLogic(pageSize, offSet)}
-                disabled={offSet - pageSize < 0}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  nextLogic(pageSize, offSet);
-                }}
-                disabled={
-                  offSet + pageSize >= originalRecipesResponse?.totalResults
-                }
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-          <div className="flex justify-between space-x-2 py-4">
-            <div className="text-sm text-muted-foreground">
-              Page {getCurrentPageNumber(offSet, pageSize)} of{" "}
-              {Math.ceil(originalRecipesResponse?.totalResults / pageSize)}
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Items per page:
-                  {/*  {table.getState().pagination.pageSize} */}
-                  {pageSize}
-                  <ChevronDownIcon className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {[5, 10, 20, 50].map((size) => (
-                  <DropdownMenuItem
-                    key={size}
-                    onSelect={() => handlePageSizeChange(size, offSet)}
-                    className={`capitalize ${
-                      pageSize === size ? "font-bold" : ""
-                    }`}
+          {recipes.length !== 0 && (
+            <>
+              <div className="flex items-center justify-between space-x-2 py-4">
+                <div className="text-sm text-muted-foreground">
+                  {/* Page {table.getState().pagination.pageIndex + 1} of{" "} */}
+                  {/* {table.getPageCount()} */}
+                </div>
+                <div className="space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => prevLogic(pageSize, offSet)}
+                    disabled={offSet - pageSize < 0}
                   >
-                    {size}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      nextLogic(pageSize, offSet);
+                    }}
+                    disabled={
+                      offSet + pageSize >= originalRecipesResponse?.totalResults
+                    }
+                  >
+                    Next
+                  </Button>
+                </div>
+              </div>
+              <div className="flex justify-between space-x-2 py-4">
+                <div className="text-sm text-muted-foreground">
+                  Page {getCurrentPageNumber(offSet, pageSize)} of{" "}
+                  {Math.ceil(
+                    Number(originalRecipesResponse?.totalResults) / pageSize
+                  )}
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="ml-auto">
+                      Items per page:
+                      {/*  {table.getState().pagination.pageSize} */}
+                      {pageSize}
+                      <ChevronDownIcon className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {[5, 10, 20, 50].map((size) => (
+                      <DropdownMenuItem
+                        key={size}
+                        onSelect={() => handlePageSizeChange(size, offSet)}
+                        className={`capitalize ${
+                          pageSize === size ? "font-bold" : ""
+                        }`}
+                      >
+                        {size}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </>
+          )}
         </Card>
       )}
     </>
