@@ -22,7 +22,7 @@ const HomePage = (props: any) => {
         <div className="mt-20 flex flex-col gap-4 p-6 m-6">
           <div className="flex flex-row gap-4">
             <h2 className="text-left text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-black to-[#001E80] dark:bg-gradient-to-b dark:from-[#f9fafb] dark:to-[#aa6262] text-transparent dark:text-transparent bg-clip-text mt-5">
-              Hey Yash, <br></br> What are we cooking today?
+              Hey, <br></br> What are we cooking today?
             </h2>
             <Lottie
               animationData={animationData}
