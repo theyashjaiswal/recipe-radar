@@ -1,6 +1,6 @@
 # Recipe-Radar
 
-- **Hosted Link** - [https://https://recipe-radar-three.vercel.app/](https://recipe-radar-three.vercel.app/)
+- **Hosted Link** - [https://recipe-radar-three.vercel.app/](https://recipe-radar-three.vercel.app/)
 - Desktop :
    - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-20_04_59](https://github.com/user-attachments/assets/60782ea6-fc86-451b-ab21-a507f02aa5f9)
    - ![screencapture-recipe-radar-three-vercel-app-2024-09-20-20_05_40](https://github.com/user-attachments/assets/21b7dc8c-7c5f-44bf-aa4e-6ace99bafc23) 
