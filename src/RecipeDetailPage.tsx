@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
-import { ChevronLeft, Copy, MoreVertical, Vegan, WheatOff } from "lucide-react";
+import {
+  ChevronLeft,
+  Copy,
+  LeafyGreen,
+  MilkOff,
+  MoreVertical,
+  Vegan,
+  WheatOff,
+} from "lucide-react";
 import { Separator } from "./components/ui/separator";
 import {
   DropdownMenu,
@@ -522,7 +530,7 @@ function RecipeDetailPage() {
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="flex  gap-2 items-center text-gray-600">
-                          <img src={milkIcon} className="h-5 w-5"></img>
+                          <MilkOff className="h-5 w-5" />
                           Dairy-Free
                           {/* <span>{yesNo(recipeDetails.dairyFree)}</span> */}
                         </span>
@@ -530,7 +538,7 @@ function RecipeDetailPage() {
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="flex  gap-2 items-center text-gray-600">
-                          <img src={vegIcon} className="h-5 w-5"></img>
+                          <LeafyGreen className="h-5 w-5" />
                           Vegetarian
                         </span>
                         <span> {yesNo(recipeDetails.vegan)}</span>
@@ -584,8 +592,9 @@ function RecipeDetailPage() {
                   <div className="grid gap-3">
                     <div className="font-semibold">Additional Information</div>
                     <dl className="grid gap-3">
-                      {recipeDetails.preparationMinutes.toString().trim() !==
-                      "" ? (
+                      {recipeDetails.preparationMinutes &&
+                      recipeDetails.preparationMinutes?.toString().trim() !==
+                        "" ? (
                         <div className="flex items-center justify-between">
                           <dt className="flex items-center gap-1 text-muted-foreground">
                             Preparation Time
@@ -598,27 +607,34 @@ function RecipeDetailPage() {
                         </div>
                       ) : null}
 
-                      <div className="flex items-center justify-between">
-                        <dt className="flex items-center gap-1 text-muted-foreground">
-                          Cooking Time
-                        </dt>
-                        <dd>
-                          {convertMinsToHoursAndMins(
-                            recipeDetails.cookingMinutes
-                          )}
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <dt className="flex items-center gap-1 text-muted-foreground">
-                          Total Time
-                        </dt>
-                        <dd>
-                          {convertMinsToHoursAndMins(
-                            recipeDetails.preparationMinutes +
+                      {recipeDetails.cookingMinutes &&
+                      recipeDetails.cookingMinutes?.toString().trim() !== "" ? (
+                        <div className="flex items-center justify-between">
+                          <dt className="flex items-center gap-1 text-muted-foreground">
+                            Cooking Time
+                          </dt>
+                          <dd>
+                            {convertMinsToHoursAndMins(
                               recipeDetails.cookingMinutes
-                          )}
-                        </dd>
-                      </div>
+                            )}
+                          </dd>
+                        </div>
+                      ) : null}
+
+                      {recipeDetails.cookingMinutes &&
+                      recipeDetails.cookingMinutes?.toString().trim() !== "" ? (
+                        <div className="flex items-center justify-between">
+                          <dt className="flex items-center gap-1 text-muted-foreground">
+                            Total Time
+                          </dt>
+                          <dd>
+                            {convertMinsToHoursAndMins(
+                              (recipeDetails.preparationMinutes || 0) +
+                                recipeDetails.cookingMinutes
+                            )}
+                          </dd>
+                        </div>
+                      ) : null}
                       <div className="flex items-center justify-between">
                         <dt className="flex items-center gap-1 text-muted-foreground">
                           Servings

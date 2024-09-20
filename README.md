@@ -48,6 +48,3 @@ You can deploy this app using services like Vercel or Netlify by connecting your
 
 - Undraw - For Illustration.
   [Undraw](https://undraw.co)
-
-- FlatIcons - For Icons.
-  [Flaticon](https://www.flaticon.com/)
