@@ -400,7 +400,7 @@ function RecipeDetailPage(_props: any) {
   const sanitize = (val) => {
     let sanitizedHtml;
     try {
-      sanitizedHtml = DOMPurify.sanitize(val); // Sanitize the HTML
+      sanitizedHtml = DOMPurify.sanitize(val);
     } catch {
       console.log("error sanitizing");
     }
@@ -408,20 +408,18 @@ function RecipeDetailPage(_props: any) {
   };
 
   function convertMinsToHoursAndMins(totalMinutes) {
-    const hours = Math.floor(totalMinutes / 60); // Get the number of full hours
-    const minutes = totalMinutes % 60; // Get the remaining minutes
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
 
-    // Construct the result with the correct pluralization
     const hoursDisplay =
       hours > 0 ? `${hours} hour${hours === 1 ? "" : "s"}` : "";
     const minutesDisplay =
       minutes > 0 ? `${minutes} minute${minutes === 1 ? "" : "s"}` : "";
 
-    // Return combined result, ensuring no extra spaces or conjunctions
     if (hoursDisplay && minutesDisplay) {
       return `${hoursDisplay} and ${minutesDisplay}`;
     } else {
-      return hoursDisplay || minutesDisplay; // Return whichever is non-empty
+      return hoursDisplay || minutesDisplay;
     }
   }
 
@@ -451,18 +449,9 @@ function RecipeDetailPage(_props: any) {
                         <span className="sr-only">Copy Order ID</span>
                       </Button>
                     </CardTitle>
-                    {/* <CardDescription>
-               
-                </CardDescription> */}
                   </div>
 
                   <div className="ml-auto flex items-center gap-2">
-                    {/* <Button size="sm" variant="outline" className="h-8 gap-1">
-                  <Truck className="h-3.5 w-3.5" />
-                  <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                    Track Order
-                  </span>
-                </Button> */}
                     {recipeDetails.veryPopular ? (
                       <div className="inline-flex self-end items-center text-sm rounded-xl px-4 py-1.5 border border-gray-800 dark:invert">
                         <motion.span
@@ -511,21 +500,29 @@ function RecipeDetailPage(_props: any) {
                 </CardHeader>
                 <CardContent className="p-6 text-sm">
                   <div className="grid gap-3">
-                    <img
-                      src={recipeDetails.image}
-                      className="object-contain rounded-lg hover:scale-105 hover:ease-in-out hover:duration-100"
-                    />
+                    <div className="relative w-full h-64 sm:h-96 overflow-hidden rounded-lg">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center blur-md scale-110"
+                        style={{
+                          backgroundImage: `url(${recipeDetails.image})`,
+                        }}
+                      ></div>
+                      <div className="absolute inset-0 bg-black opacity-[0.28] dark:opacity-[0.68]"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <img
+                          src={recipeDetails.image}
+                          className="object-contain max-w-full max-h-full rounded-lg hover:scale-105 transition-transform duration-300"
+                          alt={recipeDetails.title}
+                        />
+                      </div>
+                    </div>
                     <div className="font-semibold">Health Information</div>
                     <ul className="grid gap-3">
                       <li className="flex items-center justify-between">
                         <span className="flex text-md gap-2 items-center text-gray-600 dark:text-muted-foreground ">
                           <Vegan className="h-5 w-5" />
                           Vegan
-                          {/* <span className="text-muted-foreground">
-                        {yesNo(recipeDetails.vegan)}
-                      </span> */}
                         </span>
-                        {/* <span>$250.00</span> */}{" "}
                         {yesNo(recipeDetails.vegan)}
                       </li>
                       <li className="flex items-center justify-between">
@@ -534,14 +531,14 @@ function RecipeDetailPage(_props: any) {
                           Dairy-Free
                           {/* <span>{yesNo(recipeDetails.dairyFree)}</span> */}
                         </span>
-                        <span> {yesNo(recipeDetails.vegan)}</span>
+                        <span> {yesNo(recipeDetails.dairyFree)}</span>
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="flex  gap-2 items-center text-gray-600  dark:text-muted-foreground ">
                           <LeafyGreen className="h-5 w-5" />
                           Vegetarian
                         </span>
-                        <span> {yesNo(recipeDetails.vegan)}</span>
+                        <span> {yesNo(recipeDetails.vegetarian)}</span>
                       </li>
                       <li className="flex items-center justify-between">
                         <span className="flex  gap-2 items-center text-gray-600  dark:text-muted-foreground ">
