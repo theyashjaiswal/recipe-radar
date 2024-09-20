@@ -448,47 +448,44 @@ export function SearchBox() {
           {/* Pagination controls */}
           {recipes.length !== 0 && (
             <>
-              <div className="flex items-center justify-between space-x-2 py-4">
-                <div className="text-sm text-muted-foreground">
-                  {/* Page {table.getState().pagination.pageIndex + 1} of{" "} */}
-                  {/* {table.getPageCount()} */}
+              <div className="mt-4 flex items-center justify-between space-x-2 py-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => prevLogic(pageSize, offSet)}
+                  disabled={offSet - pageSize < 0}
+                >
+                  Previous
+                </Button>
+                <div className="text-sm text-center">
+                  <p>
+                    Page {getCurrentPageNumber(offSet, pageSize)} of{" "}
+                    {Math.ceil(
+                      Number(originalRecipesResponse?.totalResults) / pageSize
+                    )}
+                  </p>
+                  <p className="font-semibold">
+                    Total Results: {originalRecipesResponse?.totalResults || 0}
+                  </p>
                 </div>
-                <div className="space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => prevLogic(pageSize, offSet)}
-                    disabled={offSet - pageSize < 0}
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      nextLogic(pageSize, offSet);
-                    }}
-                    disabled={
-                      offSet + pageSize >= originalRecipesResponse?.totalResults
-                    }
-                  >
-                    Next
-                  </Button>
-                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    nextLogic(pageSize, offSet);
+                  }}
+                  disabled={
+                    offSet + pageSize >= originalRecipesResponse?.totalResults
+                  }
+                >
+                  Next
+                </Button>
               </div>
-              <div className="flex justify-between space-x-2 py-4">
-                <div className="text-sm text-muted-foreground">
-                  Page {getCurrentPageNumber(offSet, pageSize)} of{" "}
-                  {Math.ceil(
-                    Number(originalRecipesResponse?.totalResults) / pageSize
-                  )}
-                </div>
+              <div className="flex justify-end space-x-2 py-4">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="ml-auto">
-                      Items per page:
-                      {/*  {table.getState().pagination.pageSize} */}
-                      {pageSize}
+                      Items per page: {pageSize}
                       <ChevronDownIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
