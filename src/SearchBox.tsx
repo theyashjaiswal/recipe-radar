@@ -3,7 +3,7 @@
 import * as React from "react";
 import axios from "axios";
 import debounce from "lodash/debounce";
-
+import { motion } from "framer-motion";
 import { Button } from "./components/ui/button";
 import {
   Popover,
@@ -143,16 +143,59 @@ export function SearchBox() {
   const [originalRecipesResponse, setOriginalRecipesResponse] =
     React.useState(null);
 
+  const [startTypingAnimationComplete, setStartTypingAnimationComplete] =
+    React.useState(false);
   const [value, setValue] = React.useState("");
   const [pageSize, setPageSize] = React.useState(5);
   const { toast } = useToast();
   const [selectedCuisines, setSelectedCuisines] = React.useState<string[]>([]);
 
   const [offSet, setOffSet] = React.useState(0);
+  const [placeholder, setPlaceholder] = React.useState("");
 
   const navigate = useNavigate();
 
-  // Debounced API call function
+  React.useEffect(() => {
+    if (!startTypingAnimationComplete) return;
+
+    const text = "Search Recipes...";
+    let i = 0;
+    let isDeleting = false;
+    let typingInterval: number;
+
+    const animatePlaceholder = () => {
+      const currentText = isDeleting
+        ? text.substring(0, i - 1)
+        : text.substring(0, i + 1);
+
+      setPlaceholder(currentText + "|");
+
+      if (!isDeleting && i === text.length) {
+        clearTimeout(typingInterval);
+        setTimeout(() => {
+          isDeleting = true;
+          typingInterval = window.setTimeout(animatePlaceholder, 50);
+        }, 1000);
+      } else if (isDeleting && i === 0) {
+        clearTimeout(typingInterval);
+        setTimeout(() => {
+          isDeleting = false;
+          typingInterval = window.setTimeout(animatePlaceholder, 150);
+        }, 500);
+      } else {
+        i = isDeleting ? i - 1 : i + 1;
+        typingInterval = window.setTimeout(
+          animatePlaceholder,
+          isDeleting ? 50 : 150
+        );
+      }
+    };
+
+    typingInterval = window.setTimeout(animatePlaceholder, 150);
+
+    return () => clearTimeout(typingInterval);
+  }, [startTypingAnimationComplete]);
+
   const fetchRecipesDebounce = React.useCallback(
     debounce(async (query: string, pSize: number, pOffSet: number) => {
       if (!query.trim()) {
@@ -171,7 +214,7 @@ export function SearchBox() {
             params: {
               apiKey: API_KEY,
               query: query,
-              number: pSize, // Number of results per page
+              number: pSize,
               offset: pOffSet,
               cuisine: cuisinesString,
             },
@@ -272,18 +315,18 @@ export function SearchBox() {
       const newCuisines = prevState.includes(cuisine)
         ? prevState.filter((item) => item !== cuisine)
         : [...prevState, cuisine];
-
-      // Call fetchRecipes with the updated cuisines
       fetchRecipes(value, pageSize, offSet, newCuisines);
 
       return newCuisines;
     });
   };
 
-  // Handle input change and debounce the API call
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setValue(newValue);
+    if (newValue.trim() !== "") {
+      setPlaceholder(""); // Clear the placeholder when user starts typing
+    }
     fetchRecipes(newValue, pageSize, offSet, selectedCuisines);
   };
 
@@ -335,9 +378,9 @@ export function SearchBox() {
           </svg>
           <input
             type="search"
-            className="shadow-lg flex h-12 border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full rounded-lg bg-background pl-8 "
-            placeholder="Search Recipes..."
-            jf-ext-cache-id="0"
+            className="shadow-lg flex h-12 border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full rounded-lg bg-background pl-8"
+            placeholder={value ? "" : placeholder}
+            value={value}
             onChange={handleInputChange}
           />
         </div>
@@ -399,12 +442,45 @@ export function SearchBox() {
           </PopoverContent>
         </Popover>
       </div>
-
       {value.trim() === "" && selectedCuisines.length == 0 ? (
-        <div className="flex  flex-col justify-center items-center">
-          <p className="text-2xl md:text-md md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-black to-[#001E80] dark:bg-gradient-to-b dark:from-[#8e95ae] dark:to-white text-transparent dark:text-transparent bg-clip-text mt-2">
-            Start typing to discover some delicious options!
-          </p>
+        <div className="flex flex-col justify-center items-center">
+          <motion.p
+            className="text-2xl md:text-md md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-black to-[#001E80] dark:bg-gradient-to-b dark:from-[#8e95ae] dark:to-white text-transparent dark:text-transparent bg-clip-text mt-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            onAnimationComplete={() => setStartTypingAnimationComplete(true)}
+          >
+            {["Start typing to discover some delicious options!"].map(
+              (line, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                    ease: "easeInOut",
+                  }}
+                >
+                  {line.split("").map((char, charIndex) => (
+                    <motion.span
+                      key={charIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: (index * line.length + charIndex) * 0.03,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </motion.span>
+              )
+            )}
+          </motion.p>
           <img src={chefIcon} alt="Chef Icon" className="w-96 " />{" "}
         </div>
       ) : (
