@@ -51,6 +51,9 @@ You can deploy this app using services like Vercel or Netlify by connecting your
 - React - For building the single-page application.
   [React Documentation](https://react.dev/learn/installation)
 
+- Vite - A fast build tool and development server for modern web projects. 
+  [Vite Documentation](https://vitejs.dev/guide/)
+
 - Lucide React - For Icons.
   [Lucide React Documentation](https://lucide.dev/guide/)
 
