@@ -39,6 +39,9 @@ You can deploy this app using services like Vercel or Netlify by connecting your
 
 ## References/Libraries Used
 
+- Spoonacular API - for recipe data.
+  [Spoonacular API Documentation](https://spoonacular.com/food-api/docs)
+
 - shadcn/ui - Utilized for the UI components.
   [shadcn UI Library Documentation](https://ui.shadcn.com/docs)
 
